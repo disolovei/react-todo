@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addTask } from '../../actions';
+import { addTask } from '../../redux/actions';
 
 class AddTask extends React.Component {
     constructor(props) {
@@ -26,7 +26,7 @@ class AddTask extends React.Component {
             return false;
         }
 
-        this.props.save(this.state.title, this.state.description);
+        this.props.addTask(this.state.title, this.state.description);
 
         this.setState({
             title: '',
@@ -52,10 +52,21 @@ class AddTask extends React.Component {
                 <h2>Додати завдання</h2>
                 <form onSubmit={this.submitHandler}>
                     <label>
-                        <input type="text" name="title" placeholder="Заголовок" value={this.state.title || ''} onChange={this.inputTitleHandler} />
+                        <input 
+                        type="text" 
+                        name="title" 
+                        placeholder="Заголовок" 
+                        value={this.state.title || ''} 
+                        onChange={this.inputTitleHandler} 
+                    />
                     </label>
                     <label>
-                        <textarea name="description" placeholder="Короткий опис" value={this.state.description || ''} onChange={this.inputDescriptionHandler}></textarea>
+                        <textarea 
+                            name="description" 
+                            placeholder="Короткий опис" 
+                            value={this.state.description || ''} 
+                            onChange={this.inputDescriptionHandler}
+                        />
                     </label>
                     <button type="submit">Додати</button>
                 </form>
@@ -64,10 +75,4 @@ class AddTask extends React.Component {
     }
 }
 
-function mapDispathToProps(dispath) {
-    return {
-        save: (title, description) => dispath(addTask(title, description)),
-    };
-}
-
-export default connect(null, mapDispathToProps)(AddTask);
+export default connect(null, { addTask })(AddTask);

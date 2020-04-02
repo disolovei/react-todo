@@ -1,24 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { removeTask, resolveTask, unresolveTask } from '../../actions';
+import { toggleResolve, removeTask } from '../../redux/actions';
 
-function TaskOutput({ task, taskID, removeHandler, resolve, unresolve }) {
+function TaskOutput({ task, taskID, removeHandler, toggleResolve }) {
     const taskIDHTML = `task-${taskID}`;
-
-    const resolver = () => {
-        if ( true === task.resolved ) {
-            unresolve(taskID)
-        } else {
-            resolve(taskID)
-        }
-    };
 
     return <li>
         <input 
             type="checkbox" 
             id={taskIDHTML} 
             checked={task.resolved || false} 
-            onChange={resolver} 
+            onChange={ toggleResolve.bind(null, taskID) } 
         />
         <label 
             htmlFor={taskIDHTML}>
@@ -35,8 +27,7 @@ function TaskOutput({ task, taskID, removeHandler, resolve, unresolve }) {
 function mapDispathToProps(dispath) {
     return {
         removeHandler: (ID) => dispath(removeTask(ID)),
-        resolve: (ID) => dispath(resolveTask(ID)),
-        unresolve: (ID) => dispath(unresolveTask(ID)),
+        toggleResolve: (ID) => dispath(toggleResolve(ID)),
     };
 }
 
