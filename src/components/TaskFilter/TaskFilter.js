@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { filterTasks } from '../../redux/actions';
+import { filterTasks } from '../../redux/actions/todo';
 
 function TaskFilter({ changeFilter }) {
     const [selected, setSelected] = useState('all');

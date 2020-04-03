@@ -22,7 +22,7 @@ h1, h2 {
   margin-bottom: 1em;
 }
 
-input[type="text"], textarea {
+input[type="text"], input[type="email"], input[type="password"], textarea {
   border: 1px solid #e3e3e3;
   padding: 10px 15px;
   font-family: inherit;
@@ -30,6 +30,10 @@ input[type="text"], textarea {
   margin-bottom: 1rem;
   font-size: 1rem;
   background-color: #fff;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus textarea:focus {
+  box-shadow: 0 0 3px tomato;
 }
 
 textarea {
@@ -50,10 +54,45 @@ button, input[type="button"], input[type="submit"] {
   margin-right: 5px;
 }
 
+button:focus, input[type="button"]:focus, input[type="submit"]:focus {
+  box-shadow: 0 0 3px tomato;
+}
+
+a {
+  text-decoration: none;
+  color: tomato;
+}
+
+a:hover {
+  color: #000;
+}
+
+/* a:focus {
+  box-shadow: 0 0 5px tomato;
+} */
+
 .container {
   max-width: 750px;
   margin-right: auto;
   margin-left: auto;
+}
+
+.site-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+nav ul li a {
+  display: block;
+  padding: 15px 10px;
+  font-size: .8rem;
+  font-weight: 500;
 }
 
 .task-list {
@@ -108,13 +147,17 @@ button, input[type="button"], input[type="submit"] {
   background-color: tomato;
 }
 
+.task-list input[type="checkbox"]:focus + label:before {
+  box-shadow: 0 0 3px tomato;
+}
+
 .task-list input[type="checkbox"] + label .task-description {
   display: none;
 }
 
 .task-list li button {
   margin-bottom: 0;
-  margin-right: 5px;
+  margin-right: 0;
 }
 
 .task-filters button:not(.active) {
@@ -124,4 +167,18 @@ button, input[type="button"], input[type="submit"] {
 
 .task-filters button:last-of-type {
   margin-right: 0;
+}
+
+.forms {
+  margin: 5rem auto 0;
+  max-width: 400px;
+}
+
+.forms header {
+  text-align: center;
+}
+
+.forms header button:not(.active) {
+  background-color: #e9e9e9;
+  color: #000;
 }

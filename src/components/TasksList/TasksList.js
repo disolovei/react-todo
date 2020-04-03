@@ -48,8 +48,8 @@ function TasksList({ tasks, currentFilter }) {
 
 function mapStateToProps(state) {
     return {
-        tasks: state.taskList,
-        currentFilter: state.filter,
+        tasks: state.todo.taskList,
+        currentFilter: state.todo.filter,
     };
 }
 

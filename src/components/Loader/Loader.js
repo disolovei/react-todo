@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { loadedData } from '../../redux/actions';
+import { loadedData } from '../../redux/actions/todo';
 
 function Loader({ saveToStore }) {
     setTimeout(() => {

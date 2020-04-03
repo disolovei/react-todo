@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toggleResolve, removeTask } from '../../redux/actions';
+import { toggleResolve, removeTask } from '../../redux/actions/todo';
 
 function TaskOutput({ task, taskID, removeHandler, toggleResolve }) {
     const taskIDHTML = `task-${taskID}`;
