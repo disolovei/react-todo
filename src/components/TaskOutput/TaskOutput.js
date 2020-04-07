@@ -26,7 +26,9 @@ function TaskOutput({ task, taskID, removeHandler, toggleResolve }) {
 
 function mapDispathToProps(dispath) {
     return {
-        removeHandler: (ID) => dispath(removeTask(ID)),
+        removeHandler: (ID) => {
+            dispath(removeTask(ID))
+        },
         toggleResolve: (ID) => dispath(toggleResolve(ID)),
     };
 }

@@ -1,12 +1,9 @@
 import { ADD_TASK, TOGGLE_RESOLVE, REMOVE_TASK, LOADED_DATA, FILTER_TASKS } from '../actionTypes';
 
-export function addTask(title, description) {
+export function addTask(item) {
     return {
         type: ADD_TASK,
-        payload: {
-            title,
-            description,
-        }
+        payload: { item },
     };
 }
 

@@ -1,33 +1,29 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { loadedData } from '../../redux/actions/todo';
+import React from "react";
+import { connect } from "react-redux";
+import { loadedData } from "../../redux/actions/todo";
 
-function Loader({ saveToStore }) {
-    setTimeout(() => {
-        saveToStore({
-            0: {
-                title: 'Створити додаток на React',
-                description: 'Порожньо',
-                resolved: true,
-            },
-            1: {
-                title: 'Пофіксити баг із ре-рендерингом списку завдань',
-                description: 'Порожньо',
-                resolved: false,
-            },
-            2: {
-                title: 'Пофіксити баг із ре-рендерингом списку завдань',
-                description: 'Порожньо',
-                resolved: false,
-            },
-        });
-    }, 1000);
+class Loader extends React.Component {
+    fetchTasks() {
+        const { saveToStore } = this.props;
 
-    return <h2>Завантаження списку завдань....</h2>;
+        fetch(
+            "http://todo.capslock.co.ua/api/task?accessToken=ldksajlfkjsjdlfjkh",
+        )
+            .then((response) => response.json())
+            .then((tasks) => {
+                saveToStore(tasks);
+            })
+            .catch((error) => console.error(error.message));
+    }
+
+    render() {
+        this.fetchTasks();
+        return <h2>Завантаження списку завдань....</h2>;
+    }
 }
 
 function mapDispathToProps(dispatch) {
-    return { 
+    return {
         saveToStore: (data) => dispatch(loadedData(data)),
     };
 }

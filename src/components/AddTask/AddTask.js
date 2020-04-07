@@ -15,9 +15,41 @@ class AddTask extends React.Component {
         this.inputDescriptionHandler = this.inputDescriptionHandler.bind(this);
     }
 
+    sendDataToServer() {
+        const { title, description } = this.state;
+
+        const urlencoded = new URLSearchParams();
+        urlencoded.append("title", title);
+        urlencoded.append("description", description);
+
+        fetch(
+            "http://todo.capslock.co.ua/api/task?accessToken=alkjsdkljahsdkjasd",
+            {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: urlencoded,
+            }
+        )
+            .then(result => result.json())
+            .then(res => {
+                console.log(res.addedItem);
+                this.props.addTask(res.addedItem);
+                this.setState({
+                    title: "",
+                    description: "",
+                });
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
     submitHandler(e) {
         e.preventDefault();
         const { title, description } = this.state;
+        
         if ( ! title ) {
             return false;
         }
@@ -26,12 +58,7 @@ class AddTask extends React.Component {
             return false;
         }
 
-        this.props.addTask(this.state.title, this.state.description);
-
-        this.setState({
-            title: '',
-            description: '',
-        });
+        this.sendDataToServer();
     }
 
     inputTitleHandler(e) {

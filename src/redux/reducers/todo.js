@@ -2,31 +2,25 @@ import { ADD_TASK, TOGGLE_RESOLVE, REMOVE_TASK, LOADED_DATA, FILTER_TASKS } from
 
 const initialState = {
     loaded: false,
-    freeKey: 0,
     filter: 'all',
-    taskList: {},
+    taskList: [],
 };
 
 export default ( state = initialState, action ) => {
     switch( action.type ) {
         case LOADED_DATA:
             const { data } = action.payload;
+            console.log(data);
             return {
                 ...state,
                 loaded: true,
-                freeKey: Math.max(...Object.keys(data)) + 1,
-                taskList: { ...data }
+                taskList: [ ...data ]
             };
         case ADD_TASK:
-            const { title, description } = action.payload;
-            const { freeKey } = state;          
+            const { ...addedItem } = action.payload.item;         
             return {
                 ...state,
-                freeKey: freeKey + 1,
-                taskList: { 
-                    ...state.taskList, 
-                    [freeKey] : { title, description, resolved: false }
-                 },
+                taskList: [ { ...addedItem }, ...state.taskList],
             };
         case TOGGLE_RESOLVE:
             const { id } = action.payload;

@@ -1,27 +1,27 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import TaskOutput from '../TaskOutput/TaskOutput';
-import TaskFilter from '../TaskFilter/TaskFilter';
+import React from "react";
+import { connect } from "react-redux";
+import TaskOutput from "../TaskOutput/TaskOutput";
+import TaskFilter from "../TaskFilter/TaskFilter";
 
 function TasksList({ tasks, currentFilter }) {
     //TODO
     const prepareTasks = () => {
-        let filtered = {};
+        let filtered = [];
 
-        if ( 'done' === currentFilter ) {
-            for ( let i in tasks ) {
-                if ( tasks[i].resolved ) {
-                    filtered[i] = { ...tasks[i] };
+        if ("done" === currentFilter) {
+            for (let i in tasks) {
+                if (tasks[i].resolved) {
+                    filtered.push({ ...tasks[i] });
                 }
             }
-        } else if ( 'undone' === currentFilter ) {
-            for ( let i in tasks ) {
-                if ( ! tasks[i].resolved ) {
-                    filtered[i] = { ...tasks[i] };
+        } else if ("undone" === currentFilter) {
+            for (let i in tasks) {
+                if (!tasks[i].resolved) {
+                    filtered.push({ ...tasks[i] });
                 }
             }
         } else {
-            filtered = { ...tasks };
+            filtered = [...tasks];
         }
 
         return filtered;
@@ -31,17 +31,25 @@ function TasksList({ tasks, currentFilter }) {
 
     return (
         <React.Fragment>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <header
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                }}
+            >
                 <h2>Список завдань</h2>
                 <TaskFilter />
             </header>
-            {
-                preparedTasks && Object.keys(preparedTasks).length
-                ?   <ul className="task-list">
-                        {Object.keys(preparedTasks).map((item) => <TaskOutput task={preparedTasks[item]} key={item} taskID={item}/>) }
-                    </ul>
-                :   <p>Завдання відсутні...</p>
-            }
+            {preparedTasks && preparedTasks.length ? (
+                <ul className="task-list">
+                    {preparedTasks.map((item, index) => (
+                        <TaskOutput task={item} key={index} taskID={item._id} />
+                    ))}
+                </ul>
+            ) : (
+                <p>Завдання відсутні...</p>
+            )}
         </React.Fragment>
     );
 }
