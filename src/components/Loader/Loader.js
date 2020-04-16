@@ -7,11 +7,11 @@ class Loader extends React.Component {
         const { saveToStore } = this.props;
 
         fetch(
-            "http://todo.capslock.co.ua/api/task?accessToken=ldksajlfkjsjdlfjkh",
+            "http://localhost:4000/api/tasks/many?accessToken=lksdflksdf",
         )
             .then((response) => response.json())
             .then((tasks) => {
-                saveToStore(tasks);
+                saveToStore(tasks.data);
             })
             .catch((error) => console.error(error.message));
     }

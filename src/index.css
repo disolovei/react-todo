@@ -58,6 +58,11 @@ button:focus, input[type="button"]:focus, input[type="submit"]:focus {
   box-shadow: 0 0 3px tomato;
 }
 
+button:disabled, input[type="button"]:disabled, input[type="submit"]:disabled {
+  background-color: #e9e9e9;
+  color: #000;
+}
+
 a {
   text-decoration: none;
   color: tomato;
@@ -66,10 +71,6 @@ a {
 a:hover {
   color: #000;
 }
-
-/* a:focus {
-  box-shadow: 0 0 5px tomato;
-} */
 
 .container {
   max-width: 750px;
@@ -181,4 +182,8 @@ nav ul li a {
 .forms header button:not(.active) {
   background-color: #e9e9e9;
   color: #000;
+}
+
+.forms input.invalid {
+  border-color: red;
 }

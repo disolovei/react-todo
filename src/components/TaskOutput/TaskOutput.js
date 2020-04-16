@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { toggleResolve, removeTask } from '../../redux/actions/todo';
+import DeleteTask from '../DeleteTask/DeleteTask';
 
 function TaskOutput({ task, taskID, removeHandler, toggleResolve }) {
     const taskIDHTML = `task-${taskID}`;
@@ -17,18 +18,12 @@ function TaskOutput({ task, taskID, removeHandler, toggleResolve }) {
             <h3>{task.title}</h3>
             <div className="task-description">{task.description}</div>
         </label>
-        <button 
-            type="button" 
-            onClick={() => {removeHandler(taskID)}}
-        >-</button>
+        <DeleteTask taskID={taskID}/>
     </li>;
 }
 
 function mapDispathToProps(dispath) {
     return {
-        removeHandler: (ID) => {
-            dispath(removeTask(ID))
-        },
         toggleResolve: (ID) => dispath(toggleResolve(ID)),
     };
 }

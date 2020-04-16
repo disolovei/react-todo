@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import Button from '../../Form/Button/Button';
+import Input from '../../Form/Input/Input';
 
 function Login() {
     const [login, setLogin] = useState("");
@@ -15,7 +17,7 @@ function Login() {
             <h2>Реєстрація</h2>
             <form onSubmit={submitForm}>
             <label>
-                <input
+                <Input 
                     type="text"
                     name="login"
                     placeholder="Логін"
@@ -24,7 +26,7 @@ function Login() {
                 />
             </label>
             <label>
-                <input
+                <Input
                     type="email"
                     name="email"
                     placeholder="Електронна пошта"
@@ -33,7 +35,7 @@ function Login() {
                 />
             </label>
             <label>
-                <input
+                <Input
                     type="password"
                     name="password"
                     placeholder="Пароль"
@@ -42,7 +44,7 @@ function Login() {
                 />
             </label>
             <label>
-                <input
+                <Input
                     type="password"
                     name="password_repeat"
                     placeholder="Повторіть пароль"
@@ -50,7 +52,7 @@ function Login() {
                     onChange={e => {setPasswordRepeat(e.target.value)}}
                 />
             </label>
-            <button type="submit">Зареструватися</button>
+            <Button type="submit">Зареструватися</Button>
         </form>
         </React.Fragment>
     );

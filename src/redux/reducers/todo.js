@@ -10,7 +10,6 @@ export default ( state = initialState, action ) => {
     switch( action.type ) {
         case LOADED_DATA:
             const { data } = action.payload;
-            console.log(data);
             return {
                 ...state,
                 loaded: true,
@@ -37,6 +36,8 @@ export default ( state = initialState, action ) => {
         case REMOVE_TASK:
             const { id: removeId } = action.payload;
             const { taskList: tasks } = state;
+
+            console.log(removeId);
 
             delete tasks[removeId];
 
