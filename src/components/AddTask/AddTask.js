@@ -1,15 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { addTask } from '../../redux/actions/todo';
-import axios from 'axios';
-import { withCookies } from 'react-cookie';
+import React from "react";
+import { connect } from "react-redux";
+import { addTask } from "../../redux/actions/todo";
+import axios from "axios";
+import { withCookies } from "react-cookie";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 class AddTask extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            description: '',
+            title: "",
+            description: "",
         };
 
         this.submitHandler = this.submitHandler.bind(this);
@@ -23,25 +25,26 @@ class AddTask extends React.Component {
         const urlencoded = new URLSearchParams();
         urlencoded.append("title", title);
         urlencoded.append("description", description);
-        urlencoded.append("userID", this.props.cookies.get('auth'));
+        urlencoded.append("userID", this.props.cookies.get("auth"));
 
         axios({
             method: "post",
-            url: "http://localhost:4000/api/tasks?accessToken=alkjsdkljahsdkjasd",
+            url:
+                "http://localhost:4000/api/tasks?accessToken=alkjsdkljahsdkjasd",
             data: urlencoded,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Cache-Control": "no-cache",
             },
         })
-            .then(res => {
+            .then((res) => {
                 this.props.addTask(res.data.addedItem);
                 this.setState({
                     title: "",
                     description: "",
                 });
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error(err);
             });
     }
@@ -49,12 +52,12 @@ class AddTask extends React.Component {
     submitHandler(e) {
         e.preventDefault();
         const { title, description } = this.state;
-        
-        if ( ! title ) {
+
+        if (!title) {
             return false;
         }
 
-        if ( ! description ) {
+        if (!description) {
             return false;
         }
 
@@ -63,13 +66,13 @@ class AddTask extends React.Component {
 
     inputTitleHandler(e) {
         this.setState({
-            title: e.target.value
+            title: e.target.value,
         });
     }
 
-    inputDescriptionHandler(e) {
+    inputDescriptionHandler(event, editor) {
         this.setState({
-            description: e.target.value
+            description: editor.getData(),
         });
     }
 
@@ -79,22 +82,20 @@ class AddTask extends React.Component {
                 <h2>Додати завдання</h2>
                 <form onSubmit={this.submitHandler}>
                     <label>
-                        <input 
-                        type="text" 
-                        name="title" 
-                        placeholder="Заголовок" 
-                        value={this.state.title || ''} 
-                        onChange={this.inputTitleHandler} 
-                    />
-                    </label>
-                    <label>
-                        <textarea 
-                            name="description" 
-                            placeholder="Короткий опис" 
-                            value={this.state.description || ''} 
-                            onChange={this.inputDescriptionHandler}
+                        <input
+                            type="text"
+                            name="title"
+                            placeholder="Заголовок"
+                            value={this.state.title || ""}
+                            onChange={this.inputTitleHandler}
                         />
                     </label>
+                    <CKEditor
+                        editor={ClassicEditor}
+                        data={this.state.description || ""}
+                        onChange={this.inputDescriptionHandler}
+                    />
+                    <br />
                     <button type="submit">Додати</button>
                 </form>
             </React.Fragment>
