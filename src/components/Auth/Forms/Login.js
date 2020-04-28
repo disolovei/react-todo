@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import axios from "axios";
-import { userLogin } from "../../../redux/actions/user";
 import Button from "../../Form/Button/Button";
 import Input from "../../Form/Input/Input";
+import { useCookies } from "react-cookie";
 
 const sendRequest = (data) => {
     return axios({
@@ -25,14 +24,17 @@ const sendRequest = (data) => {
     });
 };
 
-function Login({ auth }) {
+function Login() {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [loginInvalid, setLoginInvalid] = useState(false);
     const [passInvalid, setPassInvalid] = useState(false);
+    const [loginError, setLoginError] = useState("");
+    const [, setUserId] = useCookies(['auth']);
 
     const submitForm = (e) => {
         e.preventDefault();
+        setLoginError("");
 
         if (validation()) {
             sendRequest({
@@ -40,12 +42,13 @@ function Login({ auth }) {
                 password,
             })
                 .then((response) => {
-                    console.log(response);
-                    auth();
+                    setUserId("auth", response.data.data.id, {path: "/"});
                 })
                 .catch((error) => {
-                    console.log(error);
+                    setLoginError(error.message);
                 });
+        } else {
+            setLoginError("Перевірте вказані пароль та логін!");
         }
 
         return false;
@@ -53,17 +56,17 @@ function Login({ auth }) {
 
     const validation = () => {
         let isValid = true;
-
+    
         if (!login) {
             isValid = false;
             setLoginInvalid(true);
         }
-
+    
         if (!password) {
             isValid = false;
             setPassInvalid(true);
         }
-
+    
         return isValid;
     };
 
@@ -79,8 +82,8 @@ function Login({ auth }) {
                         className={loginInvalid ? "invalid" : null}
                         value={login}
                         onChange={(e) => {
-                            if (passInvalid) {
-                                setPassInvalid(false);
+                            if (loginInvalid) {
+                                setLoginInvalid(false);
                             }
 
                             setLogin(e.target.value);
@@ -103,16 +106,21 @@ function Login({ auth }) {
                         }}
                     />
                 </label>
+                {loginError ? (
+                    <p
+                        className="error"
+                        style={{
+                            color: "tomato",
+                            margin: ".5em 0",
+                            fontWeight: 700,
+                            transition: `opacity 300ms ease-in-out`
+                        }}
+                    >{ loginError.toString() }</p>
+                ) : null}
                 <Button type="submit">Увійти</Button>
             </form>
         </React.Fragment>
     );
 }
 
-function mapDispathToProps(dispatch) {
-    return {
-        auth: (login, password) => dispatch(userLogin(login, password)),
-    };
-}
-
-export default connect(null, mapDispathToProps)(Login);
+export default Login;

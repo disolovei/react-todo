@@ -1,23 +1,30 @@
 import React from "react";
 import { connect } from "react-redux";
 import { loadedData } from "../../redux/actions/todo";
+import { withCookies } from "react-cookie";
+import axios from "axios";
 
 class Loader extends React.Component {
     fetchTasks() {
-        const { saveToStore } = this.props;
-
-        fetch(
-            "http://localhost:4000/api/tasks/many?accessToken=lksdflksdf",
-        )
-            .then((response) => response.json())
+        axios({
+            method: "get",
+            url: `http://localhost:4000/api/tasks/many?userID=${this.props.cookies.get("auth")}`,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Cache-Control": "no-cache",
+            },
+        })
             .then((tasks) => {
-                saveToStore(tasks.data);
+                this.props.saveToStore(tasks.data.data);
             })
             .catch((error) => console.error(error.message));
     }
 
-    render() {
+    componentDidMount() {
         this.fetchTasks();
+    }
+
+    render() {
         return <h2>Завантаження списку завдань....</h2>;
     }
 }
@@ -28,4 +35,4 @@ function mapDispathToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispathToProps)(Loader);
+export default connect(null, mapDispathToProps)(withCookies(Loader));

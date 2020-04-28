@@ -7,10 +7,10 @@ import { CookiesProvider } from "react-cookie";
 import store from "./redux/store";
 
 ReactDOM.render(
-    <Provider store={store}>
-        <CookiesProvider>
+    <CookiesProvider>
+        <Provider store={store}>
             <App />
-        </CookiesProvider>
-    </Provider>,
+        </Provider>
+    </CookiesProvider>,
     document.getElementById("root"),
 );

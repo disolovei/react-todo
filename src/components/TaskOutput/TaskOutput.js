@@ -1,9 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toggleResolve, removeTask } from '../../redux/actions/todo';
+import { toggleResolve } from '../../redux/actions/todo';
 import DeleteTask from '../DeleteTask/DeleteTask';
+import axios from 'axios';
 
-function TaskOutput({ task, taskID, removeHandler, toggleResolve }) {
+function resolveTask(taskID) {
+    return axios({
+        method: "put",
+        url: `http://localhost:4000/api/tasks/resolve/${taskID}`,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Cache-Control": "no-cache",
+        },
+    });   
+}
+
+function TaskOutput({ task, taskID, toggleResolve }) {
     const taskIDHTML = `task-${taskID}`;
 
     return <li>
@@ -11,7 +23,15 @@ function TaskOutput({ task, taskID, removeHandler, toggleResolve }) {
             type="checkbox" 
             id={taskIDHTML} 
             checked={task.resolved || false} 
-            onChange={ toggleResolve.bind(null, taskID) } 
+            onChange={() => {
+                resolveTask(taskID)
+                .then(response => {
+                    if ( response.status === 200 ) {
+                        toggleResolve(taskID);
+                    }
+                })
+                .catch(error => console.error(error.message))
+            }} 
         />
         <label 
             htmlFor={taskIDHTML}>

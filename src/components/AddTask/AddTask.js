@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addTask } from '../../redux/actions/todo';
+import axios from 'axios';
+import { withCookies } from 'react-cookie';
 
 class AddTask extends React.Component {
     constructor(props) {
@@ -21,21 +23,19 @@ class AddTask extends React.Component {
         const urlencoded = new URLSearchParams();
         urlencoded.append("title", title);
         urlencoded.append("description", description);
+        urlencoded.append("userID", this.props.cookies.get('auth'));
 
-        fetch(
-            "http://todo.capslock.co.ua/api/task?accessToken=alkjsdkljahsdkjasd",
-            {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: urlencoded,
-            }
-        )
-            .then(result => result.json())
+        axios({
+            method: "post",
+            url: "http://localhost:4000/api/tasks?accessToken=alkjsdkljahsdkjasd",
+            data: urlencoded,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Cache-Control": "no-cache",
+            },
+        })
             .then(res => {
-                console.log(res.addedItem);
-                this.props.addTask(res.addedItem);
+                this.props.addTask(res.data.addedItem);
                 this.setState({
                     title: "",
                     description: "",
@@ -102,4 +102,4 @@ class AddTask extends React.Component {
     }
 }
 
-export default connect(null, { addTask })(AddTask);
+export default connect(null, { addTask })(withCookies(AddTask));

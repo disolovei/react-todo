@@ -23,29 +23,33 @@ export default ( state = initialState, action ) => {
             };
         case TOGGLE_RESOLVE:
             const { id } = action.payload;
+            const { taskList: unResolvedTasks } = state;
+
+            for ( let index in unResolvedTasks ) {
+                if ( unResolvedTasks[index]._id !== id ) {
+                    continue;
+                }
+
+                unResolvedTasks[index] = {
+                    ...unResolvedTasks[index],
+                    resolved: !unResolvedTasks[index].resolved
+                };
+                break;
+            }
+
             return {
                 ...state,
-                taskList: { 
-                    ...state.taskList,
-                    [id]: {
-                        ...state.taskList[id],
-                        resolved: ! state.taskList[id].resolved,
-                    },
-                },
+                taskList: [...unResolvedTasks],
             };
         case REMOVE_TASK:
             const { id: removeId } = action.payload;
             const { taskList: tasks } = state;
 
-            console.log(removeId);
-
-            delete tasks[removeId];
+            const newTaskList = tasks.filter(item => item._id !== removeId);
 
             return {
                 ...state,
-                taskList: {
-                    ...tasks
-                }
+                taskList: [...newTaskList]
             };
         case FILTER_TASKS:
             const { rule } = action.payload;

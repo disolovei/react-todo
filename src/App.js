@@ -6,9 +6,12 @@ import Header from "./components/Header/Header";
 import Auth from "./components/Auth/Auth";
 import Todo from "./components/Todo/Todo";
 import Profile from "./components/Profile/Profile";
-import { userLogout } from './redux/actions/user';
+import { withCookies } from "react-cookie";
+import Logout from "./components/Auth/Logout";
 
-function App({ authorized, dispatch }) {
+function App({ cookies }) {
+    const userId = cookies.get("auth");
+
     return (
         <BrowserRouter>
             <Helmet>
@@ -17,38 +20,31 @@ function App({ authorized, dispatch }) {
                     rel="stylesheet"
                 />
             </Helmet>
-            { authorized ?   <Header /> : null }
+            { userId ? <Header /> : null }
             <div className="container">
                 <Switch>
                     <Route 
                         path="/auth/logout" 
-                        render={() => {
-                            dispatch(userLogout());
-                            return <Redirect 
-                                to={{
-                                    pathname: '/auth',
-                                }}
-                            />
-                        }} 
+                        component={Logout} 
                     />
                     <Route
                         path="/auth"
                         render={() =>
-                            authorized ? (
+                            userId ? (
                                 <Redirect
                                     to={{
                                         pathname: '/',
                                     }}
                                 />
                             ) : (
-                                <Auth />
+                                <Auth cookies={cookies} />
                             )
                         }
                     />
                     <Route
                         path="/profile"
                         render={() =>
-                            !authorized ? (
+                            !userId ? (
                                 <Redirect
                                     to={{
                                         pathname: '/auth',
@@ -62,7 +58,7 @@ function App({ authorized, dispatch }) {
                     <Route 
                         path="/" 
                         render={() =>
-                            !authorized ? (
+                            !userId ? (
                                 <Redirect
                                     to={{
                                         pathname: '/auth',
@@ -85,4 +81,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(App);
+export default withCookies(connect(mapStateToProps)(App));

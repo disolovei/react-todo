@@ -3,7 +3,7 @@ import Login from "./Forms/Login";
 import Register from "./Forms/Register";
 import Button from "../Form/Button/Button";
 
-function Auth() {
+function Auth({cookies}) {
     const [presentation, setPresentation] = useState("login");
 
     return (

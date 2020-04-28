@@ -1,17 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { userLogout } from '../../redux/actions/user';
 import { Redirect } from 'react-router-dom';
+import { useCookies } from "react-cookie";
 
-function Logout({ logout }) {
-    logout();
+function Logout() {
+    const [,, removeAppCookie] = useCookies(["auth"]);
+    console.log("Removing");
+    removeAppCookie("auth", {path: "/"});
     return <Redirect to='/'/>;
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        logout: () => dispatch(userLogout()),
-    };
-}
-
-export default connect(null, mapDispatchToProps)(Logout);
+export default Logout
