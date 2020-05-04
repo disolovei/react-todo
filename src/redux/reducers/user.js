@@ -23,16 +23,7 @@ export default (state = initialState, action) => {
                 },
             };
         case USER_LOGOUT:
-            return {
-                ...state,
-                authorized: false,
-                data: {
-                    ...state.data,
-                    login: '',
-                    email: '',
-                    password: '',
-                },
-            };
+            return { ...initialState };
         default:
             return state;
     }

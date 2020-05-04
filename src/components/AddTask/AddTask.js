@@ -94,6 +94,9 @@ class AddTask extends React.Component {
                         editor={ClassicEditor}
                         data={this.state.description || ""}
                         onChange={this.inputDescriptionHandler}
+                        config={{
+                            toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'link', '|', 'bulletedList', 'numberedList', '|', 'blockQuote' ],
+                        }}
                     />
                     <br />
                     <button type="submit">Додати</button>

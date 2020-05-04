@@ -1,4 +1,4 @@
-import { ADD_TASK, TOGGLE_RESOLVE, REMOVE_TASK, LOADED_DATA, FILTER_TASKS } from '../actionTypes';
+import { ADD_TASK, TOGGLE_RESOLVE, REMOVE_TASK, LOADED_DATA, FILTER_TASKS, USER_LOGOUT } from '../actionTypes';
 
 const initialState = {
     loaded: false,
@@ -57,6 +57,9 @@ export default ( state = initialState, action ) => {
                 ...state,
                 filter: rule,
             };
+        case USER_LOGOUT:
+            console.log("Here");
+            return { ...initialState };
         default:
             return state;
     }
